@@ -1,0 +1,132 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{theobrown}[Theo Brown's Custom LaTeX Package]
+
+%%%%%%%%%%%%%%%%%%%
+% PACKAGE IMPORTS %
+%%%%%%%%%%%%%%%%%%%
+% Compatability
+\RequirePackage[utf8]{inputenc}
+% Math mode
+\RequirePackage{amsmath}
+\RequirePackage{amsfonts}
+\RequirePackage{bm}
+% Units
+\RequirePackage{siunitx}
+% Graphics
+\RequirePackage{graphicx}
+% Tables
+\RequirePackage{multirow}
+% Algorithms
+\RequirePackage{algorithm}
+\RequirePackage{algpseudocode}
+% Captions
+\RequirePackage[labelfont=bf]{caption}
+\RequirePackage{subcaption}
+\RequirePackage{sidecap}
+% Code
+\RequirePackage{minted}
+% Utilities
+\RequirePackage{hyperref}
+% Layout
+\RequirePackage[bottom]{footmisc}
+\RequirePackage{fancyhdr}
+% Itemize and enumerate
+\RequirePackage{enumitem}
+% Appendices
+\RequirePackage[title]{appendix}
+% Bibliography
+\RequirePackage[style=numeric]{biblatex}
+
+%%%%%%%%%%%
+% SIUNITX %
+%%%%%%%%%%%
+% Use new interfaces for siunitx (\unit and \qty),
+% regardless of the version of siunitx installed
+\ifdefined\qty\else
+  \ifdefined\NewCommandCopy
+    \NewCommandCopy\qty\SI
+  \else
+    \NewDocumentCommand\qty{O{}mm}{\SI[#1]{#2}{#3}}
+  \fi
+\fi
+\ifdefined\unit\else
+  \ifdefined\NewCommandCopy
+    \NewCommandCopy\unit\si
+  \else
+    \NewDocumentCommand\unit{O{}m}{\si[#1]{#2}}
+  \fi
+\fi
+
+%%%%%%%%%%%%
+% HYPERREF %
+%%%%%%%%%%%%
+\hypersetup{colorlinks=true,linkcolor=blue,filecolor=blue,urlcolor=blue,citecolor=blue}
+\def\sectionautorefname{Section}
+\def\subsectionautorefname{Section}
+\def\subsubsectionautorefname{Section}
+\def\figureautorefname{Figure}
+\def\tableautorefname{Table}
+\def\equationautorefname{Equation}
+\def\algorithmautorefname{Algorithm}
+
+%%%%%%%%%%%
+% CAPTION %
+%%%%%%%%%%%
+\captionsetup[algorithm]{labelsep=colon}
+
+%%%%%%%%%%%
+% SIDECAP %
+%%%%%%%%%%%
+\sidecaptionvpos{figure}{c}
+
+%%%%%%%%%%%%
+% ENUMITEM %
+%%%%%%%%%%%%
+\setlist{topsep=6pt,itemsep=2pt}
+
+%%%%%%%%%%%%%%%%%%%
+% GIT REFERENCING %
+%%%%%%%%%%%%%%%%%%%
+% Use \SetGitRepoURL{repo_url} to set the repository url (accessed with \GitRepoURL)
+\newcommand{\SetGitRepoURL}[1]{%
+  \newcommand{\GitRepoURL}{#1}%
+}
+% Use \SetGitCommitHash{commit_hash} to set the commit to reference (accessed with \GitCommitHash)
+\newcommand{\SetGitCommitHash}[1]{%
+  \newcommand{\GitCommitHash}{#1}%
+}
+% Use \SetGitRepoName{repo_name} to set the repository name (accessed with \GitRepoName)
+% This will be prefixed to the \GitPath
+\newcommand{\SetGitRepoName}[1]{%
+  \newcommand{\GitRepoName}{\texttt{#1}}%
+}
+% Use \GitPath{path/to/file} to create a hyperlinked path to the file at the GitRepoURL in the relevant commit hash
+%% NOTE: Currently this doesn't behave nicely with line breaks :(
+\newcommand{\GitPath}[1]{%
+  \href{\GitRepoURL/tree/\GitCommitHash/#1}{\GitRepoName\path{/#1}}%
+}
+
+%%%%%%%%%%%%%%%%%
+% MATH COMMANDS %
+%%%%%%%%%%%%%%%%%
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\argmin}{argmin}
+\DeclareMathOperator{\del}{\nabla}
+\DeclareMathOperator{\grad}{\nabla}
+
+%%%%%%%%%%%%%%
+% ALGORITHMS %
+%%%%%%%%%%%%%%
+\algblockdefx[InputList]{InputList}{EndInputList}{\textbf{Input:}}{}
+\algnotext[InputList]{EndInputList}
+\newcommand{\Input}{\State}
+
+\algblockdefx[ParameterList]{ParameterList}{EndParameterList}{\textbf{Parameters:}}{}
+\algnotext[ParameterList]{EndParameterList}
+\newcommand{\Parameter}{\State}
+
+\algblockdefx[OutputList]{OutputList}{EndOutputList}{\textbf{Output:}}{}
+\algnotext[OutputList]{EndOutputList}
+\newcommand{\Output}{\State}
+
+\algblockdefx[AlgorithmBody]{BeginAlgorithm}{EndAlgorithm}{\item[] \textbf{begin algorithm}}{\textbf{end algorithm}}
